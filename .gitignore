@@ -99,9 +99,9 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-SpaceInvaders.vcsproj
-SpaceInvaders.vcsproj.filters
-SpaceInvaders.vcsproj.user
+SpaceInvaders.vcxproj
+SpaceInvaders.vcxproj.filters
+SpaceInvaders.vcxproj.user
 
 # Chutzpah Test files
 _Chutzpah*
