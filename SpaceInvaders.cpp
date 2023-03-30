@@ -53,11 +53,14 @@ void SpaceInvaders::gameLoop() {
 						case SDLK_ESCAPE:
 							shouldQuit = true;
 							break;
+						case SDLK_SPACE:
+							player->spawnBullet();
 					}
 					break;
 				case SDL_KEYUP:
 					keys[event.key.keysym.sym] = 0;
 					break;
+
 			}
 		}
 		
@@ -70,19 +73,28 @@ void SpaceInvaders::gameLoop() {
 
 void SpaceInvaders::update(double delta) {
 	player->update(delta, keys);
-	
+	for (size_t i = 0; i < player->bullets.size(); i++) {
+		player->bullets.at(i)->update(delta);
+	}
+
+	// print size of the bullets vector
+	std::cout << player->bullets.size() << std::endl;
 }
 
 void SpaceInvaders::render() {
-
-	SDL_Rect test = { test.x = 500, test.y = 500, test.w = SCREEN_WIDTH, SCREEN_HEIGHT };
-
 	SDL_RenderClear(renderer);
 	player->render(renderer);
+	for (size_t i = 0; i < player->bullets.size(); i++) {
+		player->bullets.at(i)->render(renderer);
+		int bId = player->bullets.at(i)->id;
+		if (bId != i)
+			bId = i;
+	}
 	SDL_RenderPresent(renderer);
 }
 
 void SpaceInvaders::endGame() {
+	delete player;
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 }

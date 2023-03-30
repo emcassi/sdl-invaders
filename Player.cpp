@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 Player::Player(SDL_Renderer* renderer) {
 	rect.w = width * scale.x;
@@ -13,6 +14,10 @@ Player::Player(SDL_Renderer* renderer) {
 
 Player::~Player() {
 	SDL_DestroyTexture(texture);
+
+	for (auto bullet : bullets) {
+		delete bullet;
+	}
 }
 
 void Player::update(double delta, std::map<int, int> keys) {
@@ -23,6 +28,11 @@ void Player::update(double delta, std::map<int, int> keys) {
 	if (keys[SDLK_d] == 1 || keys[SDLK_RIGHT] == 1) {
 		position.x += speed * delta;
 	}
+
+	if (position.x < 0)
+		position.x = 0;
+	else if(position.x > SCREEN_WIDTH - width * scale.x)
+		position.x = SCREEN_WIDTH - width * scale.x;
 }
 
 void Player::render(SDL_Renderer* renderer) {
@@ -40,5 +50,14 @@ void Player::setTexture(SDL_Texture* newTexture) {
 }
 
 int Player::spawnBullet() {
-	PlayerProjectile newBullet = PlayerProjectile()
+	PlayerProjectile* newBullet = new PlayerProjectile(renderer, getBulletSpawnPoint(), &bullets);
+	bullets.push_back(newBullet);
+	return 0;
+}
+
+Vector2<double> Player::getBulletSpawnPoint() {
+	Vector2<double> sp = position;
+	sp.x += (width * scale.x) / 2;
+	sp.y -= (height - 2) * scale.y;
+	return sp;
 }
