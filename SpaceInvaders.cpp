@@ -78,7 +78,7 @@ void SpaceInvaders::update(double delta) {
 	}
 
 	// print size of the bullets vector
-	std::cout << player->bullets.size() << std::endl;
+	//std::cout << player->bullets.size() << std::endl;
 }
 
 void SpaceInvaders::render() {

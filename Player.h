@@ -14,10 +14,15 @@ public:
 	Vector2<double> scale = { scale.x = 5, scale.y = 5 };
 	double speed = 0.7f;
 	std::vector<PlayerProjectile*> bullets;
+	bool canShoot = true;
 private:
 	SDL_Texture* texture;
 	int width = 13, height = 8;
 	SDL_Renderer* renderer;
+
+	double bulletTimer = 0;
+	double bulletCooldown = 250.f;
+
 public:
 	Player(SDL_Renderer* renderer);
 	~Player();

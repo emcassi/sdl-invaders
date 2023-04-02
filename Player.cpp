@@ -33,6 +33,18 @@ void Player::update(double delta, std::map<int, int> keys) {
 		position.x = 0;
 	else if(position.x > SCREEN_WIDTH - width * scale.x)
 		position.x = SCREEN_WIDTH - width * scale.x;
+
+	if (!canShoot) {
+		if (bulletTimer <= 0) {
+			bulletTimer = bulletCooldown;
+			canShoot = true;
+		}
+		else {
+			bulletTimer -= delta;
+		}
+	}
+
+	std::cout << "TIMER: " << delta << std::endl;
 }
 
 void Player::render(SDL_Renderer* renderer) {
@@ -50,8 +62,11 @@ void Player::setTexture(SDL_Texture* newTexture) {
 }
 
 int Player::spawnBullet() {
-	PlayerProjectile* newBullet = new PlayerProjectile(renderer, getBulletSpawnPoint(), &bullets);
-	bullets.push_back(newBullet);
+	if (canShoot) {
+		PlayerProjectile* newBullet = new PlayerProjectile(renderer, getBulletSpawnPoint(), &bullets);
+		bullets.push_back(newBullet);
+		canShoot = false;
+	}
 	return 0;
 }
 
